@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Seamus Abshere"]
   s.email       = ["seamus@abshere.net"]
   s.homepage    = ""
-  s.summary     = %q{Provides String#to_regexp and Regexp#to_regexp}
-  s.description = %q{Provides String#to_regexp and Regexp#to_regexp, for example if you want to make regexps out of a CSV you just imported.}
+  s.summary     = %q{Provides String#to_regexp}
+  s.description = %q{Provides String#to_regexp, for example if you want to make regexps out of a CSV you just imported.}
 
   s.rubyforge_project = "to_regexp"
 
