@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Seamus Abshere"]
   s.email       = ["seamus@abshere.net"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/seamusabshere/to_regexp"
   s.summary     = %q{Provides String#to_regexp}
   s.description = %q{Provides String#to_regexp, for example if you want to make regexps out of a CSV you just imported.}
 
