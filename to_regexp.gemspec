@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "to_regexp"
   s.version     = ToRegexp::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
+  s.authors     = ["Seamus Abshere"]
+  s.email       = ["seamus@abshere.net"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Provides String#to_regexp and Regexp#to_regexp}
+  s.description = %q{Provides String#to_regexp and Regexp#to_regexp, for example if you want to make regexps out of a CSV you just imported.}
 
   s.rubyforge_project = "to_regexp"
 
@@ -18,4 +18,6 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
+  
+  s.add_development_dependency 'ensure-encoding'
 end

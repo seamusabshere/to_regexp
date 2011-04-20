@@ -1,0 +1,10 @@
+=to_regexp
+
+Basically a safe way to convert strings to regexps (with options).
+
+    str = "/finalis(é)/im"
+    old_way = eval(str)     # not safe
+    new_way = str.to_regexp # provided by this gem
+    old_way == new_way      # true
+
+Copyright 2011 Seamus Abshere
