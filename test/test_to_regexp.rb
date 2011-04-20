@@ -62,4 +62,10 @@ class TestToRegexp < Test::Unit::TestCase
       assert_equal 'é', '/finalis(é)/'.to_regexp.match(garbled).captures[0]
     end
   end
+  
+  def test_008_as_regexp
+    str = '/finalis(é)/in'
+    assert_equal ['finalis(é)', ::Regexp::IGNORECASE, 'n'], str.as_regexp
+    assert_equal Regexp.new(*str.as_regexp), str.to_regexp
+  end
 end
