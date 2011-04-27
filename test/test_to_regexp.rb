@@ -68,4 +68,13 @@ class TestToRegexp < Test::Unit::TestCase
     assert_equal ['finalis(é)', ::Regexp::IGNORECASE, 'n'], str.as_regexp
     assert_equal Regexp.new(*str.as_regexp), str.to_regexp
   end
+  
+  def test_009_ruby_19_splat
+    assert_equal nil, 'hi'.to_regexp
+  end
+  
+  def test_010_regexp_to_regexp
+    a = /foo/
+    assert_equal a, a.to_regexp
+  end
 end

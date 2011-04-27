@@ -1,5 +1,11 @@
 # encoding: utf-8
 module ToRegexp
+  module Regexp
+    def to_regexp
+      self
+    end
+  end
+  
   module String
     REGEXP_DELIMITERS = {
       '%r{' => '}',
@@ -7,7 +13,9 @@ module ToRegexp
     }
 
     def to_regexp
-      ::Regexp.new *as_regexp
+      if args = as_regexp
+        ::Regexp.new *args
+      end
     end
     
     def as_regexp
@@ -44,3 +52,4 @@ module ToRegexp
 end
 
 ::String.send :include, ::ToRegexp::String
+::Regexp.send :include, ::ToRegexp::Regexp
