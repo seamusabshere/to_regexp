@@ -31,6 +31,8 @@ module ToRegexp
         /\A#{delim_start}(.*)#{delim_end}([^#{delim_end}]*)\z/u =~ str
         content = $1
         inline_options = $2
+        return unless content.is_a?(::String)
+        content.gsub! '\\/', '/'
         if inline_options
           options[:ignore_case] = true if inline_options.include?('i')
           options[:multiline] = true if inline_options.include?('m')
@@ -38,7 +40,6 @@ module ToRegexp
           # 'n', 'N' = none, 'e', 'E' = EUC, 's', 'S' = SJIS, 'u', 'U' = UTF-8
           options[:lang] = inline_options.scan(/[nesu]/i).join.downcase
         end
-        content.gsub! '\\/', '/'
       else
         return
       end

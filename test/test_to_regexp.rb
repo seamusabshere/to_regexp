@@ -96,4 +96,29 @@ class TestToRegexp < Test::Unit::TestCase
     assert_equal nil, '/(FOO)/i'.to_regexp(:literal => true).match('hello/(foo)/there')
     assert '/(FOO)/i'.to_regexp(:literal => true).match('hello/(FOO)/ithere')
   end
+  
+  def test_014_try_convert
+    if RUBY_VERSION >= '1.9'
+      assert_equal /foo/i, Regexp.try_convert('/foo/i')
+      assert_equal //, Regexp.try_convert('//')
+    end
+  end
+  
+  # seen in the wild - from rack-1.2.5/lib/rack/utils.rb - converted to array to preserve order in 1.8.7
+  ESCAPE_HTML_KEYS = [
+    "&",
+    "<",
+    ">",
+    "'",
+    '"',
+    "/"
+  ]
+  def test_015_union
+    assert_equal /penzance/, Regexp.union('penzance')
+    assert_equal /skiing|sledding/, Regexp.union('skiing', 'sledding')
+    assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union(/dogs/, /cats/i)
+    assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union('/dogs/', /cats/i)
+    assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union(/dogs/, '/cats/i')
+    assert_equal %r{&|<|>|'|"|\/}.inspect, Regexp.union(*ESCAPE_HTML_KEYS).inspect
+  end
 end
