@@ -77,4 +77,23 @@ class TestToRegexp < Test::Unit::TestCase
     a = /foo/
     assert_equal a, a.to_regexp
   end
+  
+  def test_011_ignore_case_option
+    assert_equal nil, '/(FOO)/'.to_regexp(:ignore_case => false).match('foo')
+    assert_equal nil, '/(FOO)/'.to_regexp(:ignore_case => false).match('foo')
+    assert_equal 'foo', '/(FOO)/'.to_regexp(:ignore_case => true).match('foo').captures[0]
+    assert_equal 'foo', '/(FOO)/i'.to_regexp(:ignore_case => true).match('foo').captures[0]
+  end
+  
+  def test_012_literal_option
+    assert '/(FOO)/'.to_regexp(:literal => true).match('hello/(FOO)/there')
+  end
+  
+  def test_013_combine_literal_and_ignore_case
+    assert '/(FOO)/'.to_regexp(:literal => true, :ignore_case => true).match('hello/(foo)/there')
+
+    # can't use inline options obviously
+    assert_equal nil, '/(FOO)/i'.to_regexp(:literal => true).match('hello/(foo)/there')
+    assert '/(FOO)/i'.to_regexp(:literal => true).match('hello/(FOO)/ithere')
+  end
 end

@@ -7,9 +7,18 @@ Basically a safe way to convert strings to regexps (with options).
     new_way = str.to_regexp # provided by this gem
     old_way == new_way      # true
 
-You can get the options passed to <tt>Regexp.new</tt> with
+You can also treat strings as literal regexps. These two are equivalent:
 
-    str.as_regexp                              # a hash of options passed to Regexp.new
-    str.to_regexp == Regexp.new(str.as_regexp) # true
+    '/foo/'.to_regexp                                       #=> /foo/
+    'foo'.to_regexp(:literal => true)                       #=> /foo/
+    
+If you need case insensitivity and you're using <tt>:literal</tt>, pass options like <tt>:ignore_case</tt>. These two are equivalent:
 
-Copyright 2011 Seamus Abshere
+    '/foo/i'.to_regexp                                      #=> /foo/i
+    'foo'.to_regexp(:literal => true, :ignore_case => true) #=> /foo/i
+
+You can get the options passed to <tt>Regexp.new</tt> with <tt>#as_regexp</tt>:
+
+    '/foo/'.to_regexp == Regexp.new('/foo/'.as_regexp) # true
+
+Copyright 2012 Seamus Abshere
