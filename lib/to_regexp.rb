@@ -35,7 +35,9 @@ module ToRegexp
       unless options.is_a?(::Hash)
         raise ::ArgumentError, "[to_regexp] Options must be a Hash"
       end
-      str = self.strip
+      str = self
+
+      return if options[:detect] and str == ''
 
       if options[:literal] or (options[:detect] and REGEXP_DELIMITERS.none? { |k, v| str.start_with?(k) and str.end_with?(v) })
         content = ::Regexp.escape str

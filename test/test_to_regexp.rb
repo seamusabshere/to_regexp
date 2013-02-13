@@ -123,6 +123,8 @@ class TestToRegexp < Test::Unit::TestCase
   end
 
   def test_016_detect
+    assert_equal nil, ''.to_regexp(detect: true)
+    assert_equal //, '//'.to_regexp(detect: true)
     assert_equal /foo/, 'foo'.to_regexp(detect: true)
     assert_equal %r{foo\\b}, 'foo\b'.to_regexp(detect: true)
     assert_equal %r{foo\b}, '/foo\b/'.to_regexp(detect: true)
