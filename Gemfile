@@ -1,7 +1,4 @@
-source "http://rubygems.org"
+source :rubygems
 
 # Specify your gem's dependencies in to_regexp.gemspec
 gemspec
-
-# development dependencies
-gem 'ensure-encoding'

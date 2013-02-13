@@ -121,4 +121,11 @@ class TestToRegexp < Test::Unit::TestCase
     assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union(/dogs/, '/cats/i')
     assert_equal %r{&|<|>|'|"|\/}.inspect, Regexp.union(*ESCAPE_HTML_KEYS).inspect
   end
+
+  def test_016_detect
+    assert_equal /foo/, 'foo'.to_regexp(detect: true)
+    assert_equal %r{foo\\b}, 'foo\b'.to_regexp(detect: true)
+    assert_equal %r{foo\b}, '/foo\b/'.to_regexp(detect: true)
+    assert_equal %r{foo\\b/}, 'foo\b/'.to_regexp(detect: true)
+  end
 end

@@ -11,15 +11,7 @@ end
 
 task :default => :test
 
-begin
-  require 'rake/rdoctask'
-  Rake::RDocTask.new do |rdoc|
-    rdoc.rdoc_dir = 'rdoc'
-    rdoc.title = 'remote_table'
-    rdoc.options << '--line-numbers' << '--inline-source'
-    rdoc.rdoc_files.include('README*')
-    rdoc.rdoc_files.include('lib/**/*.rb')
-  end
-rescue LoadError
-   puts "Rdoc is not available"
+require 'yard'
+YARD::Rake::YardocTask.new do |y|
+  y.options << '--no-private'
 end

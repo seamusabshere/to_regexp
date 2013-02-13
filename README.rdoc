@@ -11,7 +11,7 @@ You can also treat strings as literal regexps. These two are equivalent:
 
     '/foo/'.to_regexp                                       #=> /foo/
     'foo'.to_regexp(:literal => true)                       #=> /foo/
-    
+
 If you need case insensitivity and you're using <tt>:literal</tt>, pass options like <tt>:ignore_case</tt>. These two are equivalent:
 
     '/foo/i'.to_regexp                                      #=> /foo/i
@@ -20,5 +20,12 @@ If you need case insensitivity and you're using <tt>:literal</tt>, pass options 
 You can get the options passed to <tt>Regexp.new</tt> with <tt>#as_regexp</tt>:
 
     '/foo/'.to_regexp == Regexp.new('/foo/'.as_regexp) # true
+
+Finally, you can be more lazy using <tt>:detect</tt>:
+
+    'foo'.to_regexp(detect: true)     #=> /foo/
+    'foo\b'.to_regexp(detect: true)   #=> %r{foo\\b}
+    '/foo\b/'.to_regexp(detect: true) #=> %r{foo\b}
+    'foo\b/'.to_regexp(detect: true)  #=> %r{foo\\b/}
 
 Copyright 2012 Seamus Abshere
