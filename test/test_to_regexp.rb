@@ -116,6 +116,7 @@ class TestToRegexp < Test::Unit::TestCase
   def test_015_union
     assert_equal /penzance/, Regexp.union('penzance')
     assert_equal /skiing|sledding/, Regexp.union('skiing', 'sledding')
+    assert_equal /skiing|sledding/, Regexp.union(['skiing', 'sledding'])
     assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union(/dogs/, /cats/i)
     assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union('/dogs/', /cats/i)
     assert_equal /(?-mix:dogs)|(?i-mx:cats)/, Regexp.union(/dogs/, '/cats/i')
@@ -130,4 +131,58 @@ class TestToRegexp < Test::Unit::TestCase
     assert_equal %r{foo\b}, '/foo\b/'.to_regexp(detect: true)
     assert_equal %r{foo\\b/}, 'foo\b/'.to_regexp(detect: true)
   end
+
+  # https://github.com/ruby/ruby/blob/trunk/test/ruby/test_regexp.rb#L474 "test_union2"
+  def test_mri_union2
+    assert_equal(/(?!)/, Regexp.union)
+    assert_equal(/foo/, Regexp.union(/foo/))
+    assert_equal(/foo/, Regexp.union([/foo/]))
+    assert_equal(/\t/, Regexp.union("\t"))
+    assert_equal(/(?-mix:\u3042)|(?-mix:\u3042)/, Regexp.union(/\u3042/, /\u3042/))
+    assert_equal("\u3041", "\u3041"[Regexp.union(/\u3042/, "\u3041")])
+  end
+
+  # https://github.com/ruby/ruby/blob/trunk/test/ruby/test_regexp.rb#L464 "test_try_convert"
+  def test_mri_try_convert
+    assert_equal(/re/, Regexp.try_convert(/re/))
+    assert_nil(Regexp.try_convert("re"))
+
+    o = Object.new
+    assert_nil(Regexp.try_convert(o))
+    def o.to_regexp() /foo/ end
+    assert_equal(/foo/, Regexp.try_convert(o))
+  end
+
+  # https://github.com/jruby/jruby/blob/master/spec/ruby/core/regexp/try_convert_spec.rb#L5
+  def test_jruby_returns_argument_if_given_regexp
+    assert_equal /foo/s, Regexp.try_convert(/foo/s)
+  end
+
+  # https://github.com/jruby/jruby/blob/master/spec/ruby/core/regexp/try_convert_spec.rb#L9
+  def test_jruby_returns_nil_if_given_arg_cant_be_converted
+    ['', 'glark', [], Object.new, :pat].each do |arg|
+      assert_equal nil, Regexp.try_convert(arg)
+    end
+  end
+
+  # https://github.com/jruby/jruby/blob/master/test/externals/ruby1.9/uri/test_common.rb#L32
+  def test_jruby_uri_common_regexp
+    assert_instance_of Regexp, URI.regexp
+    assert_instance_of Regexp, URI.regexp(['http'])
+    assert_equal URI.regexp, URI.regexp
+    assert_equal 'http://', 'x http:// x'.slice(URI.regexp)
+    assert_equal 'http://', 'x http:// x'.slice(URI.regexp(['http']))
+    assert_equal 'http://', 'x http:// x ftp://'.slice(URI.regexp(['http']))
+    assert_equal nil, 'http://'.slice(URI.regexp([]))
+    assert_equal nil, ''.slice(URI.regexp)
+    assert_equal nil, 'xxxx'.slice(URI.regexp)
+    assert_equal nil, ':'.slice(URI.regexp)
+    assert_equal 'From:', 'From:'.slice(URI.regexp)
+  end
+
+  # https://github.com/jruby/jruby/blob/master/spec/ruby/core/regexp/union_spec.rb#L14
+  def test_jruby_quotes_string_arguments
+    assert_equal /n|\./, Regexp.union("n", ".")
+  end
+
 end
