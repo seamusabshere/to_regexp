@@ -35,7 +35,7 @@ class TestToRegexp < Test::Unit::TestCase
   end
   
   def test_005_multiline_and_ignore_case
-    assert_equal 'bar', '/foo.*(bar)/mi'.to_regexp.match("foo\n\nbar").captures[0]
+    assert_equal 'bar', '/FOO.*(BAR)/mi'.to_regexp.match("foo\n\nbar").captures[0]
   end
   
   def test_006_cant_fix_garbled_input
@@ -130,6 +130,9 @@ class TestToRegexp < Test::Unit::TestCase
     assert_equal %r{foo\\b}, 'foo\b'.to_regexp(detect: true)
     assert_equal %r{foo\b}, '/foo\b/'.to_regexp(detect: true)
     assert_equal %r{foo\\b/}, 'foo\b/'.to_regexp(detect: true)
+    assert_equal %r{foo\b}i, '/foo\b/i'.to_regexp(detect: true)
+    assert_equal %r{foo\\b/i}, 'foo\b/i'.to_regexp(detect: true)
+    assert_equal /FOO.*(BAR)/mi, '/FOO.*(BAR)/mi'.to_regexp(detect: true)
   end
 
   # https://github.com/ruby/ruby/blob/trunk/test/ruby/test_regexp.rb#L474 "test_union2"

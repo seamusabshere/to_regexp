@@ -7,6 +7,13 @@ module ToRegexp
   end
   
   module String
+    class << self
+      def literal?(str)
+        REGEXP_DELIMITERS.none? { |s, e| str.start_with?(s) and str =~ /#{e}#{INLINE_OPTIONS}\z/ }
+      end
+    end
+
+    INLINE_OPTIONS = /[imxnesu]*/
     REGEXP_DELIMITERS = {
       '%r{' => '}',
       '/' => '/',
@@ -39,11 +46,11 @@ module ToRegexp
 
       return if options[:detect] and str == ''
 
-      if options[:literal] or (options[:detect] and REGEXP_DELIMITERS.none? { |k, v| str.start_with?(k) and str.end_with?(v) })
+      if options[:literal] or (options[:detect] and ToRegexp::String.literal?(str))
         content = ::Regexp.escape str
-      elsif delim_set = REGEXP_DELIMITERS.detect { |k, v| str.start_with?(k) }
-        delim_start, delim_end = delim_set.map { |delim| ::Regexp.escape delim }
-        /\A#{delim_start}(.*)#{delim_end}([^#{delim_end}]*)\z/u =~ str
+      elsif delim_set = REGEXP_DELIMITERS.detect { |k, _| str.start_with?(k) }
+        delim_start, delim_end = delim_set
+        /\A#{delim_start}(.*)#{delim_end}(#{INLINE_OPTIONS})\z/u =~ str
         content = $1
         inline_options = $2
         return unless content.is_a?(::String)
