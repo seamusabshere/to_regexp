@@ -124,15 +124,15 @@ class TestToRegexp < Test::Unit::TestCase
   end
 
   def test_016_detect
-    assert_equal nil, ''.to_regexp(detect: true)
-    assert_equal //, '//'.to_regexp(detect: true)
-    assert_equal /foo/, 'foo'.to_regexp(detect: true)
-    assert_equal %r{foo\\b}, 'foo\b'.to_regexp(detect: true)
-    assert_equal %r{foo\b}, '/foo\b/'.to_regexp(detect: true)
-    assert_equal %r{foo\\b/}, 'foo\b/'.to_regexp(detect: true)
-    assert_equal %r{foo\b}i, '/foo\b/i'.to_regexp(detect: true)
-    assert_equal %r{foo\\b/i}, 'foo\b/i'.to_regexp(detect: true)
-    assert_equal /FOO.*(BAR)/mi, '/FOO.*(BAR)/mi'.to_regexp(detect: true)
+    assert_equal nil, ''.to_regexp(:detect => true)
+    assert_equal //, '//'.to_regexp(:detect => true)
+    assert_equal /foo/, 'foo'.to_regexp(:detect => true)
+    assert_equal %r{foo\\b}, 'foo\b'.to_regexp(:detect => true)
+    assert_equal %r{foo\b}, '/foo\b/'.to_regexp(:detect => true)
+    assert_equal %r{foo\\b/}, 'foo\b/'.to_regexp(:detect => true)
+    assert_equal %r{foo\b}i, '/foo\b/i'.to_regexp(:detect => true)
+    assert_equal %r{foo\\b/i}, 'foo\b/i'.to_regexp(:detect => true)
+    assert_equal /FOO.*(BAR)/mi, '/FOO.*(BAR)/mi'.to_regexp(:detect => true)
   end
 
   # https://github.com/ruby/ruby/blob/trunk/test/ruby/test_regexp.rb#L474 "test_union2"
