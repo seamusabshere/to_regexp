@@ -32,7 +32,7 @@ module ToRegexp
     # @option options [true,false] :lang /foo/[nesu]
     def to_regexp(options = {})
       if args = as_regexp(options)
-        ::Regexp.new *args
+        ::Regexp.new(*args)
       end
     end
 
