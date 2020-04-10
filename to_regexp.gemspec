@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.summary     = %q{Provides String#to_regexp}
   s.description = %q{Provides String#to_regexp, for example if you want to make regexps out of a CSV you just imported.}
 
-  s.rubyforge_project = "to_regexp"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
