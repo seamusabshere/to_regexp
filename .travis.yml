@@ -1,0 +1,47 @@
+language: ruby
+sudo: false
+
+script:
+  - bundle exec rake $TASK
+
+os:
+  - linux
+  - osx
+rvm:
+  - "ruby-1.9.3-p551"
+  - "2.0.0"
+  - "2.1.0"
+  - "2.2.0"
+  - "2.3.0"
+  - "2.4.0"
+  - "2.5.0"
+  - "2.6.0"
+  - "2.7.0"
+  - "ruby-head"
+  - "jruby-9.1.0.0"
+  - "jruby-head"
+  - "truffleruby-head"
+  - "mruby-head"
+
+jobs:
+  exclude:
+    # These combinations fail to even install ruby or bundler on Travis:
+    # The command "rvm use 2.1.0 --install --binary --fuzzy" failed and exited with 2 during .
+    - os: osx
+      rvm: "ruby-1.9.3-p551"
+    - os: osx
+      rvm: "2.0.0"
+    - os: osx
+      rvm: "2.1.0"
+    - os: osx
+      rvm: "2.2.0"
+    - os: osx
+      rvm: "2.3.0"
+    # dyld: lazy symbol binding failed: Symbol not found: ____chkstk_darwin
+    - os: osx
+      rvm: "truffleruby-head"
+
+  # TODO these have real test failures:
+  allow_failures:
+    - rvm: "ruby-head"
+    - rvm: "truffleruby-head"
